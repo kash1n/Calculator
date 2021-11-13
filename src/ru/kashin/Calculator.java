@@ -18,18 +18,17 @@ public class Calculator {
 //        }
 //        System.out.println();
 
-        Stack<Token> stack = new Stack<>();
+        Stack<TokenNumber> stack = new Stack<>();
         for (Token t : tokensSorted) {
-            if (t instanceof TokenNumber) {
-                stack.push(t);
+            if (t instanceof TokenNumber number) {
+                stack.push(number);
             } else if (t instanceof TokenOperation op) {
-                TokenNumber tn1 = (TokenNumber) stack.pop();
-                TokenNumber tn2 = (TokenNumber) stack.pop();
+                TokenNumber tn1 = stack.pop();
+                TokenNumber tn2 = stack.pop();
                 stack.push (op.apply(tn2, tn1));
             }
         }
-        TokenNumber resToken = (TokenNumber) stack.pop();
-        return resToken.get_value();
+        return stack.pop().get_value();
     }
 
     private static ArrayDeque<Token> parse (String str) {
