@@ -9,7 +9,6 @@ import java.util.Stack;
 
 public class Calculator {
     public static double calculate (String str) {
-
         ArrayDeque<Token> tokens = parse(str);
         ArrayDeque<Token> tokensSorted = shuntingYard(tokens);
 //        System.out.println("RPN:");
@@ -17,18 +16,7 @@ public class Calculator {
 //            System.out.print(t.expr() + " ");
 //        }
 //        System.out.println();
-
-        Stack<TokenNumber> stack = new Stack<>();
-        for (Token t : tokensSorted) {
-            if (t instanceof TokenNumber number) {
-                stack.push(number);
-            } else if (t instanceof TokenOperation op) {
-                TokenNumber tn1 = stack.pop();
-                TokenNumber tn2 = stack.pop();
-                stack.push (op.apply(tn2, tn1));
-            }
-        }
-        return stack.pop().get_value();
+        return calculateOnStack (tokensSorted);
     }
 
     private static ArrayDeque<Token> parse (String str) {
@@ -131,5 +119,19 @@ public class Calculator {
         }
 
         return output;
+    }
+
+    private static double calculateOnStack (ArrayDeque<Token> tokensSorted) {
+        Stack<TokenNumber> stack = new Stack<>();
+        for (Token t : tokensSorted) {
+            if (t instanceof TokenNumber number) {
+                stack.push(number);
+            } else if (t instanceof TokenOperation op) {
+                TokenNumber tn1 = stack.pop();
+                TokenNumber tn2 = stack.pop();
+                stack.push (op.apply(tn2, tn1));
+            }
+        }
+        return stack.pop().get_value();
     }
 }
