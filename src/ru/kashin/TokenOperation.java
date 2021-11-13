@@ -1,7 +1,7 @@
 package ru.kashin;
 
 public class TokenOperation extends Token {
-    public enum OperationType { ADD, SUBTRACT, MULTIPLY, DIVIDE };
+    public enum OperationType { ADD, SUBTRACT, MULTIPLY, DIVIDE }
     private OperationType opType;
 
     public TokenOperation(String expr) {
